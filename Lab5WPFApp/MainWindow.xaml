@@ -1,0 +1,74 @@
+﻿<Window x:Class="Lab5WPFApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Lab5WPFApp"
+        xmlns:component="clr-namespace:Lab5WPFApp.Components"
+        xmlns:views="clr-namespace:Lab5WPFApp.Views"
+        xmlns:viewModel="clr-namespace:Lab5WPFApp.ViewModels"
+        mc:Ignorable="d"
+        Title="Учет объектов строительства" Height="650" Width="950">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModel:AppViewModel}">
+            <views:AppView/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="5">
+            <Expander ExpandDirection="Right"
+                      IsExpanded="{Binding Connected}"
+                      Header="Логин"
+                      VerticalAlignment="Stretch">
+                <StackPanel Orientation="Vertical" Margin="10,5,10,5">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Пользователь" Foreground="Gray"/>
+                        <TextBox x:Name="LoginTextBox" Text="{Binding Path=DbConnect.Username, Mode=TwoWay}" FontSize="14"/>
+
+                        <TextBlock Text="Пароль" Foreground="Gray"/>
+                        <component:BindablePassword
+                                 Password="{Binding Path=DbConnect.Password, Mode=TwoWay}"/>
+                        <CheckBox Margin="0 2 0 0" HorizontalAlignment="Right"
+                                  Content="Запомнить меня" Foreground="Gray"
+                                  Visibility="Hidden"/>
+
+                        <Button Margin="0 5 0 0" Background="LimeGreen" Foreground="White"
+                                Content="Подключиться" Command="{Binding Path=LoginCommand}"
+                                BorderBrush="Transparent"/>
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+        </Grid>
+        <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="6">
+            <ListView x:Name="listBox" ItemsSource="{Binding Path=DbConnect.LOG}">
+                
+            </ListView>
+        </Grid>
+        <Grid Grid.Row="0" 
+              Grid.Column="1" 
+              Grid.ColumnSpan="5" 
+              Grid.RowSpan="5">
+            <Grid.Background>
+                <ImageBrush Stretch="Fill" ImageSource="Images/constr2.png"
+                AlignmentY="Top" AlignmentX="Center"/>
+            </Grid.Background>
+            <ContentControl Content="{Binding AppView}"/>
+        </Grid>
+    </Grid>
+</Window>
